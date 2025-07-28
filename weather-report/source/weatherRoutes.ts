@@ -1,9 +1,9 @@
 import express from 'express';
-import { 
-  getWeather, 
-  getCityHistory, 
-  getWeatherAnalysis, 
-  adminLogin 
+import {
+  getWeather,
+  getCityHistory,
+  getWeatherAnalysis,
+  adminLogin,
 } from '../controllers/weatherController';
 
 export const weatherRoutes = express.Router();
@@ -36,10 +36,10 @@ weatherRoutes.get('/forecast', async (req, res) => {
 // No input validation on this route (vulnerability)
 weatherRoutes.get('/search', (req: any, res: any) => {
   const query = req.query.q;
-  
+
   // This should validate the query parameter but doesn't
   res.json({
     message: `Searching for ${query}`,
-    results: [] // Empty results for now
+    results: [], // Empty results for now
   });
 });

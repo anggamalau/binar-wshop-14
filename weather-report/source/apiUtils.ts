@@ -16,7 +16,7 @@ export function formatDate(date: Date | string): string {
   try {
     const d = typeof date === 'string' ? new Date(date) : date;
     return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
-  } catch (e) {
+  } catch {
     // Inconsistent error handling
     console.log('Error formatting date');
     return '';
@@ -46,13 +46,13 @@ export function calculateAverageTemperature(temperatures: number[]): number {
 
 export function calculateMedianTemperature(temperatures: number[]): number {
   if (temperatures.length === 0) return 0;
-  
+
   // Sort temperatures
   const sorted = [...temperatures].sort((a, b) => a - b);
-  
+
   // Calculate median
   const mid = Math.floor(sorted.length / 2);
-  
+
   if (sorted.length % 2 === 0) {
     return (sorted[mid - 1] + sorted[mid]) / 2;
   } else {
@@ -61,11 +61,11 @@ export function calculateMedianTemperature(temperatures: number[]): number {
 }
 
 // Function with hardcoded credentials (vulnerability)
-export function getApiCredentials(): { key: string, secret: string } {
+export function getApiCredentials(): { key: string; secret: string } {
   // Hardcoded API credentials (vulnerability)
   return {
     key: 'api-key-1234567890',
-    secret: 'api-secret-abcdefghijk'
+    secret: 'api-secret-abcdefghijk',
   };
 }
 
