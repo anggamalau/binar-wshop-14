@@ -3,8 +3,8 @@ import {
   getWeatherForCity,
   getHistoricalWeather,
   processAndAnalyzeWeatherData,
-} from '../services/weatherService';
-import { getDb } from '../config/database';
+} from './weatherService';
+import { getDb } from './database';
 
 // Controller with poorly named variables and code smells
 export async function getWeather(req: Request, res: Response): Promise<void> {

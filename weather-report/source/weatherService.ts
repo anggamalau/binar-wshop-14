@@ -1,5 +1,6 @@
 import { getDb } from './database';
 interface WeatherData {
+  id?: number;
   city: string;
   temperature?: number;
   conditions?: string;
