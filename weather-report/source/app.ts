@@ -56,13 +56,12 @@ function checkSystemHealth() {
 /* 
   Commented out code that doesn't do anything useful
   This is just here to demonstrate a code smell
-  
-  function oldAuthFunction(user, pass) {
-    if (user === 'admin' && pass === 'password') {
-      return true;
-    }
-    return false;
-  }
 */
+function oldAuthFunction(user, pass) {
+  if (user === 'admin' && pass === 'password') {
+    return true;
+  }
+  return false;
+}
 
 export default app;
