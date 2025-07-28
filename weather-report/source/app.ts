@@ -29,7 +29,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   console.error(err.stack);
   res.status(500).json({
     error: err.message,
-    stack: err.stack // Exposing stack trace is a security vulnerability
+    stack: err.stack, // Exposing stack trace is a security vulnerability
   });
 });
 
@@ -41,15 +41,15 @@ app.listen(PORT, () => {
 // Zombie code - unused function that never gets called
 function checkSystemHealth() {
   console.log('Checking system health...');
-  
+
   // More dead code
   const memoryUsage = process.memoryUsage();
   const cpuInfo = require('os').cpus();
-  
+
   return {
     status: 'ok',
     memory: memoryUsage,
-    cpu: cpuInfo
+    cpu: cpuInfo,
   };
 }
 
