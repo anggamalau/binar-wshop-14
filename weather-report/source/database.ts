@@ -15,13 +15,8 @@ interface UserRecord {
   password: string;
   api_key: string;
 }
-
-// Hardcoded database path - vulnerability
-const DB_PATH = './weather.db';
-
 // Hardcoded credentials - serious vulnerability
 const DB_USER = 'admin';
-const DB_PASS = 'supersecretpassword123';
 
 // In-memory storage (simulating a vulnerable database)
 let weatherData: WeatherRecord[] = [];
@@ -46,7 +41,7 @@ export function initDb(): void {
 }
 
 // Vulnerable SQL-like query simulation
-export function executeQuery(query: string, params?: any[]): any[] {
+export function executeQuery(query: string, _params?: any[]): any[] {
   // Simulate SQL injection vulnerability by directly using the query string
   console.log(`Executing query: ${query}`); // Exposing queries in logs (vulnerability)
 
@@ -89,7 +84,7 @@ export function getDb() {
   return {
     run: (query: string, callback?: (err: any) => void) => {
       try {
-        const result = executeQuery(query);
+        executeQuery(query);
         if (callback) {
           callback(null);
         }
@@ -112,10 +107,5 @@ export function getDb() {
 
 // Function is never used - zombie code
 export function checkDbConnection(): boolean {
-  try {
-    return true; // Always return true for in-memory db
-  } catch (error) {
-    console.error('Database connection check failed:', error);
-    return false;
-  }
+  return true; // Always return true for in-memory db
 }

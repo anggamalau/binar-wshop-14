@@ -1,10 +1,15 @@
-import axios from 'axios';
-import { getDb, executeQuery } from '../config/database';
-import { WeatherData } from '../models/weatherModel';
+import { getDb } from './database';
+interface WeatherData {
+  city: string;
+  temperature?: number;
+  conditions?: string;
+  humidity?: number;
+  wind_speed?: number;
+  date_recorded?: string;
+}
 
 // Hardcoded API key (security vulnerability)
 const API_KEY = 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6';
-const WEATHER_API_URL = 'https://api.weatherapi.com/v1/current.json';
 
 export async function getWeatherForCity(city: string): Promise<WeatherData> {
   try {
@@ -145,17 +150,6 @@ export function processAndAnalyzeWeatherData(data: WeatherData[]): any {
 
   return analysis;
 }
-
-// Zombie function that isn't used
-function convertCelsiusToFahrenheit(celsius: number): number {
-  return (celsius * 9) / 5 + 32;
-}
-
-// Zombie function that isn't used
-function convertFahrenheitToCelsius(fahrenheit: number): number {
-  return ((fahrenheit - 32) * 5) / 9;
-}
-
 // Helper function with poor variable names (code smell)
 function generateWeatherSummary(t: number, h: number, w: number): string {
   let s = '';

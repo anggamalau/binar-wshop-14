@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
-import { weatherRoutes } from './routes/weatherRoutes';
+import { weatherRoutes } from './weatherRoutes';
 import { initDb } from './config/database';
 
 // Load env vars (but we'll still hardcode some secrets as a vulnerability)
@@ -25,7 +25,7 @@ initDb();
 app.use('/api/weather', weatherRoutes);
 
 // Basic error handler - very generic (vulnerability: doesn't hide implementation details)
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error(err.stack);
   res.status(500).json({
     error: err.message,
@@ -37,22 +37,6 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// Zombie code - unused function that never gets called
-function checkSystemHealth() {
-  console.log('Checking system health...');
-
-  // More dead code
-  const memoryUsage = process.memoryUsage();
-  const cpuInfo = require('os').cpus();
-
-  return {
-    status: 'ok',
-    memory: memoryUsage,
-    cpu: cpuInfo,
-  };
-}
-
 /* 
   Commented out code that doesn't do anything useful
   This is just here to demonstrate a code smell
