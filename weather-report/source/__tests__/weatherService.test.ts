@@ -1,25 +1,25 @@
-import { 
-  getWeatherForCity, 
-  getHistoricalWeather, 
-  processAndAnalyzeWeatherData 
+import {
+  getWeatherForCity,
+  getHistoricalWeather,
+  processAndAnalyzeWeatherData,
 } from '../weatherService';
 import { getDb } from '../database';
 
 // Mock the database module
 jest.mock('../database', () => ({
-  getDb: jest.fn()
+  getDb: jest.fn(),
 }));
 
 const mockDb = {
   run: jest.fn(),
-  all: jest.fn()
+  all: jest.fn(),
 };
 
 describe('weatherService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (getDb as jest.Mock).mockReturnValue(mockDb);
-    
+
     // Mock console methods to avoid noise in tests
     jest.spyOn(console, 'log').mockImplementation(() => {});
     jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -54,7 +54,7 @@ describe('weatherService', () => {
       });
 
       const result = await getWeatherForCity('London');
-      
+
       // Should still return weather data even if save fails
       expect(result).toHaveProperty('city', 'London');
     });
@@ -70,12 +70,14 @@ describe('weatherService', () => {
       }
 
       // Check that we get various conditions
-      const conditions = results.map(r => r.conditions);
+      const conditions = results.map((r) => r.conditions);
       const uniqueConditions = [...new Set(conditions)];
-      
+
       // Should have some variety in conditions (not all the same)
       expect(uniqueConditions.length).toBeGreaterThan(0);
-      expect(conditions.every(c => ['Sunny', 'Cloudy', 'Rainy', 'Stormy'].includes(c!))).toBe(true);
+      expect(conditions.every((c) => ['Sunny', 'Cloudy', 'Rainy', 'Stormy'].includes(c!))).toBe(
+        true
+      );
     });
   });
 
@@ -83,7 +85,7 @@ describe('weatherService', () => {
     it('should return historical weather data for a city', async () => {
       const mockData = [
         { city: 'London', temperature: 20, conditions: 'Sunny', date_recorded: '2023-01-01' },
-        { city: 'London', temperature: 18, conditions: 'Cloudy', date_recorded: '2023-01-02' }
+        { city: 'London', temperature: 18, conditions: 'Cloudy', date_recorded: '2023-01-02' },
       ];
 
       mockDb.all.mockImplementation((query, callback) => {
@@ -126,7 +128,7 @@ describe('weatherService', () => {
     const mockWeatherData = [
       { city: 'London', temperature: 20, humidity: 60, wind_speed: 10 },
       { city: 'London', temperature: 25, humidity: 70, wind_speed: 15 },
-      { city: 'London', temperature: 15, humidity: 50, wind_speed: 5 }
+      { city: 'London', temperature: 15, humidity: 50, wind_speed: 5 },
     ];
 
     it('should calculate temperature statistics correctly', () => {
@@ -173,9 +175,9 @@ describe('weatherService', () => {
     it('should handle extreme values', () => {
       const extremeData = [
         { city: 'Test', temperature: -10, humidity: 0, wind_speed: 0 },
-        { city: 'Test', temperature: 50, humidity: 100, wind_speed: 100 }
+        { city: 'Test', temperature: 50, humidity: 100, wind_speed: 100 },
       ];
-      
+
       const result = processAndAnalyzeWeatherData(extremeData);
 
       expect(result.temperature.high).toBe(50);

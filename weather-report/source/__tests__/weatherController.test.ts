@@ -1,10 +1,5 @@
 import { Request, Response } from 'express';
-import { 
-  getWeather, 
-  getCityHistory, 
-  getWeatherAnalysis, 
-  adminLogin 
-} from '../weatherController';
+import { getWeather, getCityHistory, getWeatherAnalysis, adminLogin } from '../weatherController';
 import * as weatherService from '../weatherService';
 import { getDb } from '../database';
 
@@ -19,25 +14,27 @@ describe('weatherController', () => {
   let mockResponse: Partial<Response>;
   let mockJson: jest.Mock;
   let mockStatus: jest.Mock;
-  let mockDb: any;
+  let mockDb: {
+    all: jest.Mock;
+  };
 
   beforeEach(() => {
     mockJson = jest.fn();
     mockStatus = jest.fn().mockReturnThis();
-    
+
     mockResponse = {
       json: mockJson,
-      status: mockStatus
+      status: mockStatus,
     };
 
     mockRequest = {
       query: {},
       params: {},
-      body: {}
+      body: {},
     };
 
     mockDb = {
-      all: jest.fn()
+      all: jest.fn(),
     };
 
     (getDb as jest.Mock).mockReturnValue(mockDb);
@@ -58,7 +55,7 @@ describe('weatherController', () => {
         temperature: 20,
         conditions: 'Sunny',
         humidity: 60,
-        wind_speed: 10
+        wind_speed: 10,
       };
 
       mockRequest.query = { city: 'London' };
@@ -69,7 +66,7 @@ describe('weatherController', () => {
       expect(mockWeatherService.getWeatherForCity).toHaveBeenCalledWith('London');
       expect(mockJson).toHaveBeenCalledWith({
         success: true,
-        data: mockWeatherData
+        data: mockWeatherData,
       });
     });
 
@@ -80,7 +77,7 @@ describe('weatherController', () => {
 
       expect(mockStatus).toHaveBeenCalledWith(400);
       expect(mockJson).toHaveBeenCalledWith({
-        error: 'City parameter is required'
+        error: 'City parameter is required',
       });
     });
 
@@ -95,7 +92,7 @@ describe('weatherController', () => {
       expect(mockJson).toHaveBeenCalledWith({
         success: false,
         error: 'Service error',
-        stack: error.stack
+        stack: error.stack,
       });
     });
   });
@@ -104,7 +101,7 @@ describe('weatherController', () => {
     it('should return historical weather data', async () => {
       const mockHistoricalData = [
         { city: 'London', temperature: 20, date_recorded: '2023-01-01' },
-        { city: 'London', temperature: 18, date_recorded: '2023-01-02' }
+        { city: 'London', temperature: 18, date_recorded: '2023-01-02' },
       ];
 
       mockRequest.params = { city: 'London' };
@@ -116,7 +113,7 @@ describe('weatherController', () => {
       expect(mockWeatherService.getHistoricalWeather).toHaveBeenCalledWith('London', '2023-01-01');
       expect(mockJson).toHaveBeenCalledWith({
         success: true,
-        data: mockHistoricalData
+        data: mockHistoricalData,
       });
     });
 
@@ -127,7 +124,7 @@ describe('weatherController', () => {
 
       expect(mockStatus).toHaveBeenCalledWith(400);
       expect(mockJson).toHaveBeenCalledWith({
-        error: 'City parameter is required'
+        error: 'City parameter is required',
       });
     });
 
@@ -142,7 +139,7 @@ describe('weatherController', () => {
       expect(mockJson).toHaveBeenCalledWith({
         success: false,
         error: 'Database error',
-        stack: error.stack
+        stack: error.stack,
       });
     });
   });
@@ -151,14 +148,14 @@ describe('weatherController', () => {
     it('should return weather analysis when data exists', async () => {
       const mockDbRows = [
         { city: 'London', temperature: 20, humidity: 60, wind_speed: 10 },
-        { city: 'London', temperature: 25, humidity: 70, wind_speed: 15 }
+        { city: 'London', temperature: 25, humidity: 70, wind_speed: 15 },
       ];
 
       const mockAnalysis = {
         temperature: { high: 25, low: 20, average: 22.5 },
         humidity: { high: 70, low: 60, average: 65 },
         wind_speed: { high: 15, low: 10, average: 12.5 },
-        summary: 'Warm. Humid. Calm winds.'
+        summary: 'Warm. Humid. Calm winds.',
       };
 
       mockRequest.params = { city: 'London' };
@@ -174,7 +171,7 @@ describe('weatherController', () => {
         success: true,
         city: 'London',
         dataPoints: 2,
-        analysis: mockAnalysis
+        analysis: mockAnalysis,
       });
     });
 
@@ -188,7 +185,7 @@ describe('weatherController', () => {
 
       expect(mockStatus).toHaveBeenCalledWith(404);
       expect(mockJson).toHaveBeenCalledWith({
-        error: 'No data found for this city'
+        error: 'No data found for this city',
       });
     });
 
@@ -203,7 +200,7 @@ describe('weatherController', () => {
 
       expect(mockStatus).toHaveBeenCalledWith(500);
       expect(mockJson).toHaveBeenCalledWith({
-        error: 'Database connection failed'
+        error: 'Database connection failed',
       });
     });
   });
@@ -216,7 +213,7 @@ describe('weatherController', () => {
 
       expect(mockJson).toHaveBeenCalledWith({
         success: true,
-        token: 'hardcoded-jwt-token-that-never-expires'
+        token: 'hardcoded-jwt-token-that-never-expires',
       });
     });
 
@@ -228,7 +225,7 @@ describe('weatherController', () => {
       expect(mockStatus).toHaveBeenCalledWith(401);
       expect(mockJson).toHaveBeenCalledWith({
         success: false,
-        error: 'Invalid credentials'
+        error: 'Invalid credentials',
       });
     });
 
@@ -240,7 +237,7 @@ describe('weatherController', () => {
       expect(mockStatus).toHaveBeenCalledWith(401);
       expect(mockJson).toHaveBeenCalledWith({
         success: false,
-        error: 'Invalid credentials'
+        error: 'Invalid credentials',
       });
     });
 
@@ -252,7 +249,7 @@ describe('weatherController', () => {
       expect(mockStatus).toHaveBeenCalledWith(401);
       expect(mockJson).toHaveBeenCalledWith({
         success: false,
-        error: 'Invalid credentials'
+        error: 'Invalid credentials',
       });
     });
   });

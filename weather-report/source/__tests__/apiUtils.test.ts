@@ -1,9 +1,9 @@
-import { 
-  doStuff, 
-  formatDate, 
-  dateFormat, 
-  calculateAverageTemperature, 
-  calculateMedianTemperature 
+import {
+  doStuff,
+  formatDate,
+  dateFormat,
+  calculateAverageTemperature,
+  calculateMedianTemperature,
 } from '../apiUtils';
 
 describe('apiUtils', () => {
@@ -11,7 +11,7 @@ describe('apiUtils', () => {
     it('should deep clone simple objects', () => {
       const input = { name: 'test', value: 42 };
       const result = doStuff(input);
-      
+
       expect(result).toEqual(input);
       expect(result).not.toBe(input);
     });
@@ -19,7 +19,7 @@ describe('apiUtils', () => {
     it('should handle arrays', () => {
       const input = [1, 2, 3];
       const result = doStuff(input);
-      
+
       expect(result).toEqual(input);
       expect(result).not.toBe(input);
     });
