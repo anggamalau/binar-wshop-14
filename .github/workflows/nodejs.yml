@@ -22,12 +22,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: weather-report/package-lock.json
 
     - name: Install dependencies
       run: npm ci
+      working-directory: weather-report
 
     - name: Run lint
       run: npm run lint
+      working-directory: weather-report
 
   test:
     needs: lint
@@ -45,9 +48,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: weather-report/package-lock.json
 
     - name: Install dependencies
       run: npm ci
+      working-directory: weather-report
 
     - name: Run tests
       run: npm test
+      working-directory: weather-report
